@@ -1,0 +1,136 @@
+<html>
+<body>
+
+<!--form action="poc2" method="get">
+<Br/>whocares<input type="text" name="whocares"/>
+<input type="submit" value="get"/>
+</form> -->
+
+
+<form action="poc1" method="post">
+<Br/>book<input type="text" name="bookid"/>
+<input type="submit" value="post"/>
+</form>
+<form action="poc1" method="post">
+	<Br/>book name<input type="text" name="bookname"/>
+	<input type="submit" value="post"/>
+	</form>
+	<form action="poc1" method="post">
+		<Br/>price<input type="text" name="price"/>
+		<input type="submit" value="post"/>
+		</form>
+
+<button id="b2">update book</button>
+
+
+</body>
+
+<script src="jquery-3.5.1.min.js"></script>
+<script>//our scrip will come here 
+
+
+
+
+
+
+
+$(document).ready(function()
+{
+console.log("no more sins");
+$(() => {
+	 console.log('dom loaded')
+	 function showcontent() {
+		let content =''
+	let ajaxparams = {
+		data: {},
+		url: 'http://localhost:900/blurevent',
+		type: 'get',
+		datatype: 'jason',
+		success: (output) => {
+			for (let i = 0; i < output.length; i++){
+				console.log ('inside loop')
+				content += 
+				output[i].bookid +
+				' , '+
+				output[i].bookname +
+				' , ' +
+				output [i].price+
+				'<br>'
+			}
+			$('message').html(content)
+		},
+		error:(err) => {
+			console.log('error occured'+err)
+		},
+	}
+	$.ajax(ajaxparams)
+}
+$('#display').click(() => {
+	showContent()
+})
+$('#bookid').blur(() => {
+	console.log('blur click')
+	let input = { bookid: $ ('#bookid').val()}
+
+	let ajaxparams = {
+		data: {},
+		url: 'http://localhost:900/blurevent',
+		type: 'get',
+		datatype: 'jason',
+		success: (output) => {
+			if (output.status) {
+				$('#mssg').html ('book id details found')
+				$('#bookname').val(output.bookDetail.name)
+				$('#price').val(output.bookDetail.price)
+			} else {
+				$('#mssg').html ('book id details not found')
+				$('#name').val('')
+				$('#balance').val('')
+			}
+		},
+		error: (err) => {
+			console.log('error occured'+err)
+		},
+	}
+	$.ajax(ajaxparams)
+})
+$('#update').click(() => {
+	console.log ('update click')
+	input = {
+		bookid: $('#bookid').val(),
+		bookname: $('#bookname').val(),
+		price: $('#price').val(),
+	}
+	let ajaxparams = {
+		data: input,
+		url: 'http://localhost:900/updatedetail',
+		type: 'get',
+		datatype: 'jason',
+		success(output) => {
+			if (output.status) {
+				$('#mssg').html ('update successfully...')
+				$('#bookid').val('')
+				$('#bookname').val('')
+				$('#price').val('')
+			} else{
+				$('#mssg').html ('information not found in the database')
+			}
+		},
+		sserror: (err) => {
+			console.log ('error occured'+ err)
+		},
+	}
+	$.ajax(ajaxparams)
+	showContent()
+})
+})
+$('#b2').click(function()) {
+	alert('book added')
+}
+	
+
+</script>
+
+
+</html>
+
